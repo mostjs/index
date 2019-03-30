@@ -1,0 +1,30 @@
+{
+  "name": "@most/index",
+  "version": "1.0.0",
+  "description": "Count and index @most/core events",
+  "main": "dist/index.js",
+  "module": "dist/index.m.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prepare": "npm run build",
+    "build": "microbundle -f es,cjs",
+    "test": "tsc --noEmit"
+  },
+  "keywords": [
+    "most",
+    "mostjs",
+    "reactive",
+    "streams"
+  ],
+  "author": "brian@briancavalier.com",
+  "license": "MIT",
+  "dependencies": {
+    "@most/core": "^1.3.4",
+    "@most/types": "^1.0.1",
+    "microbundle": "^0.11.0",
+    "typescript": "^3.4.1"
+  }
+}
