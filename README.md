@@ -72,7 +72,7 @@ Pair events with any iteratively computed index.
 
 ```typescript
 const stringIndex = (s: string) => (prev: string): [string, string] =>
-  [prev + s, prev + s]
+  [prev, prev + s]
 
 // ['', 'indexed'], ['a', 'indexed'], ['aa', 'indexed'], ['aaa', 'indexed']
 indexed(stringIndex('a'), '', constant('indexed', periodic(1000)))
