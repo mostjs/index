@@ -77,5 +77,3 @@ const stringIndex = (s: string) => (prev: string): [string, string] =>
 // ['', 'indexed'], ['a', 'indexed'], ['aa', 'indexed'], ['aaa', 'indexed']
 indexed(stringIndex('a'), '', constant('indexed', periodic(1000)))
 ```
-
-###
