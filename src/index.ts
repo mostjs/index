@@ -22,9 +22,9 @@ export const withIndexStart = <A>(start: number, sa: Stream<A>): Stream<[number,
   indexed(i => [i, i + 1], start, sa)
 
 // Pair event values with an iterative index
-export const indexed = <S, I, A>(f: (s: S) => [S, I], init: S, sa: Stream<A>): Stream<[I, A]> =>
+export const indexed = <S, I, A>(f: (s: S) => [I, S], init: S, sa: Stream<A>): Stream<[I, A]> =>
   loop((s, a) => {
-    const [seed, index] = f(s)
+    const [index, seed] = f(s)
     return { seed, value: [index, a] }
   }, init, sa)
 
