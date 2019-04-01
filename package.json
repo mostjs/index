@@ -9,9 +9,9 @@
     "dist"
   ],
   "scripts": {
-    "prepare": "npm run build",
+    "prepublishOnly": "npm run build",
     "build": "microbundle -f es,cjs",
-    "test": "typed-test 'src/**/*.test.ts'"
+    "test": "typed-test --typeCheck 'src/**/*.test.ts'"
   },
   "keywords": [
     "most",
