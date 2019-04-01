@@ -66,7 +66,7 @@ Pair events with a `start`-based index.
 withIndexStart(100, constant('withIndexStart', periodic(1000)))
 ```
 
-### indexed :: (s → [s, i]) → s → Stream a → Stream [i, a]
+### indexed :: (s → [i, s]) → s → Stream a → Stream [i, a]
 
 Pair events with any iteratively computed index.
 

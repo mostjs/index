@@ -1,4 +1,4 @@
-import { count, index, keepIndex, withCount, withIndex, withIndexStart } from './index'
+import { count, index, indexed, keepIndex, withCount, withIndex, withIndexStart } from './index'
 import { constant, periodic, runEffects, take, tap } from '@most/core'
 import { newDefaultScheduler } from '@most/scheduler'
 import { Stream } from '@most/types'
@@ -26,7 +26,7 @@ export const indexTests = describe('index', [
 ])
 
 export const withIndexTests = describe('withIndex', [
-  it('should pair events with start-based count', async ({ equal }) => {
+  it('should pair events with 0-based count', async ({ equal }) => {
     const n = randomInt(10, 20)
     const events = await collect(n, withIndex(constant('test', periodic(1))))
     equal(range(0, n).map(x => [x, 'test']), events)
@@ -50,13 +50,29 @@ export const withCountTests = describe('withCount', [
 ])
 
 export const withIndexStartTests = describe('withIndexStart', [
-  it('should pair events with computed index', async ({ equal }) => {
+  it('should pair events with start-based index', async ({ equal }) => {
     const start = randomInt(0, 10000)
     const n = randomInt(10, 20)
     const events = await collect(n, withIndexStart(start, constant('test', periodic(1))))
     equal(range(start, n).map(x => [x, 'test']), events)
   })
 ])
+
+export const indexedTests = describe('indexed', [
+  it('should pair events with computed index', async ({ equal }) => {
+    const n = randomInt(10, 20)
+
+    const s = Array(n).fill('a').join('')
+    const expected = range(0, n).map((_, i) => [s.slice(0, i), 'test'])
+
+    const stringIndex = (s: string) => (prev: string): [string, string] =>
+      [prev, prev + s]
+
+    const events = await collect(n, indexed(stringIndex('a'), '', constant('test', periodic(1))))
+    equal(expected, events)
+  })
+])
+
 
 export const keepIndexTests = describe('keepIndex', [
   it('should keep index and discard value', async ({ equal }) => {
