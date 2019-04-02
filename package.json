@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "prepublishOnly": "npm run build",
-    "build": "microbundle -f es,cjs",
+    "build": "microbundle -i src/index.ts -f es,cjs",
     "test": "typed-test --typeCheck 'src/**/*.test.ts'"
   },
   "keywords": [
@@ -27,7 +27,7 @@
   "devDependencies": {
     "@most/scheduler": "^1.2.2",
     "@most/types": "^1.0.1",
-    "@typed/test": "^9.0.0",
+    "@typed/test": "^9.1.0",
     "microbundle": "^0.11.0",
     "typescript": "^3.4.1"
   }
