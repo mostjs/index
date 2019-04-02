@@ -10,13 +10,15 @@ import {
 import { constant, periodic, runEffects, take, tap } from "@most/core";
 import { newDefaultScheduler } from "@most/scheduler";
 import { Stream } from "@most/types";
-import { describe, it } from "@typed/test";
+import { describe, it, given } from "@typed/test";
+
+const TEST_EVENT_VALUE = "test";
 
 const collect = async <A>(n: number, s: Stream<A>): Promise<A[]> => {
-  const eventValues: A[] = [];
-  const collectStream = tap(x => eventValues.push(x), s);
-  await runEffects(take(n, collectStream), newDefaultScheduler());
-  return eventValues;
+  const xs: A[] = [];
+  const sa = tap(x => xs.push(x), s);
+  await runEffects(take(n, sa), newDefaultScheduler());
+  return xs;
 };
 
 const range = (start: number, n: number): number[] =>
@@ -26,79 +28,137 @@ const randomInt = (min: number, max: number) =>
   min + Math.floor(Math.random() * (max - min));
 
 export const indexTests = describe("index", [
-  it("replaces events with 0-based index", async ({ equal }) => {
-    const n = randomInt(10, 20);
-    const events = await collect(n, index(periodic(1)));
-    equal(range(0, n), events);
-  })
+  given("a stream", [
+    it("replaces events with 0-based index", async ({ equal }) => {
+      // Fixture setup
+      const s = periodic(1);
+      const n = randomInt(10, 20);
+      const expectedEvents = range(0, n);
+      // Exercise system
+      const result = index(s);
+      // Verify outcome
+      const actualEvents = await collect(n, result);
+      equal(expectedEvents, actualEvents);
+    })
+  ])
 ]);
 
 export const withIndexTests = describe("withIndex", [
-  it("pairs events with 0-based count", async ({ equal }) => {
-    const n = randomInt(10, 20);
-    const events = await collect(n, withIndex(constant("test", periodic(1))));
-    equal(range(0, n).map(x => [x, "test"]), events);
-  })
+  given("a stream", [
+    it("pairs events with 0-based count", async ({ equal }) => {
+      // Fixture setup
+      const s = constant(TEST_EVENT_VALUE, periodic(1));
+      const n = randomInt(10, 20);
+      const expectedEvents = range(0, n).map<[number, string]>(n => [
+        n,
+        TEST_EVENT_VALUE
+      ]);
+      // Exercise system
+      const result = withIndex(s);
+      // Verify outcome
+      const actualEvents = await collect(n, result);
+      equal(expectedEvents, actualEvents);
+    })
+  ])
 ]);
 
 export const countTests = describe("count", [
-  it("replaces events with 1-based count", async ({ equal }) => {
-    const n = randomInt(10, 20);
-    const events = await collect(n, count(periodic(1)));
-    equal(range(1, n), events);
-  })
+  given("a stream", [
+    it("replaces events with 1-based count", async ({ equal }) => {
+      // Fixture setup
+      const s = periodic(1);
+      const n = randomInt(10, 20);
+      const expectedEvents = range(1, n);
+      // Exercise system
+      const result = count(s);
+      // Verify outcome
+      const actualEvents = await collect(n, result);
+      equal(expectedEvents, actualEvents);
+    })
+  ])
 ]);
 
 export const withCountTests = describe("withCount", [
-  it("pairs events with 1-based count", async ({ equal }) => {
-    const n = randomInt(10, 20);
-    const events = await collect(n, withCount(constant("test", periodic(1))));
-    equal(range(1, n).map(x => [x, "test"]), events);
-  })
+  given("a stream", [
+    it("pairs events with 1-based count", async ({ equal }) => {
+      // Fixture setup
+      const s = constant(TEST_EVENT_VALUE, periodic(1));
+      const n = randomInt(10, 20);
+      const expectedEvents = range(1, n).map<[number, string]>(n => [
+        n,
+        TEST_EVENT_VALUE
+      ]);
+      // Exercise system
+      const result = withCount(s);
+      // Verify outcome
+      const actualEvents = await collect(n, result);
+      equal(expectedEvents, actualEvents);
+    })
+  ])
 ]);
 
 export const withIndexStartTests = describe("withIndexStart", [
-  it("pairs events with start-based index", async ({ equal }) => {
-    const start = randomInt(0, 10000);
-    const n = randomInt(10, 20);
-    const events = await collect(
-      n,
-      withIndexStart(start, constant("test", periodic(1)))
-    );
-    equal(range(start, n).map(x => [x, "test"]), events);
-  })
+  given("a start index and a stream", [
+    it("pairs events with start-based index", async ({ equal }) => {
+      // Fixture setup
+      const idx = randomInt(0, 10000);
+      const s = constant(TEST_EVENT_VALUE, periodic(1));
+      const n = randomInt(10, 20);
+      const expectedEvents = range(idx, n).map<[number, string]>(n => [
+        n,
+        TEST_EVENT_VALUE
+      ]);
+      // Exercise system
+      const result = withIndexStart(idx, s);
+      // Verify outcome
+      const actualEvents = await collect(n, result);
+      equal(expectedEvents, actualEvents);
+    })
+  ])
 ]);
 
 export const indexedTests = describe("indexed", [
-  it("pairs events with computed index", async ({ equal }) => {
-    const n = randomInt(10, 20);
-
-    const s = Array(n)
-      .fill("a")
-      .join("");
-    const expected = range(0, n).map((_, i) => [s.slice(0, i), "test"]);
-
-    const stringIndex = (s: string) => (prev: string): [string, string] => [
-      prev,
-      prev + s
-    ];
-
-    const events = await collect(
-      n,
-      indexed(stringIndex("a"), "", constant("test", periodic(1)))
-    );
-    equal(expected, events);
-  })
+  given("a function, an initial value, and a stream", [
+    it("should pair events with computed index", async ({ equal }) => {
+      // Fixture setup
+      const n = randomInt(10, 20);
+      const arbitraryChar = "a";
+      const strOfLenN = Array(n)
+        .fill(arbitraryChar)
+        .join("");
+      const stringIndex = (s: string) => (prev: string): [string, string] => [
+        prev,
+        prev + s
+      ];
+      const f = stringIndex(arbitraryChar);
+      const init = "";
+      const s = constant(TEST_EVENT_VALUE, periodic(1));
+      const expectedEvents = range(0, n).map<[string, string]>((_, i) => [
+        strOfLenN.slice(0, i),
+        TEST_EVENT_VALUE
+      ]);
+      // Exercise system
+      const result = indexed(f, init, s);
+      // Verify outcome
+      const actualEvents = await collect(n, result);
+      equal(expectedEvents, actualEvents);
+    })
+  ])
 ]);
 
 export const keepIndexTests = describe("keepIndex", [
-  it("keeps index and discards value", async ({ equal }) => {
-    const start = randomInt(0, 10000);
-    const n = randomInt(10, 20);
-    const events = await collect(
-      n,
-      keepIndex(withIndexStart(start, constant("test", periodic(1))))
-    );
-    equal(range(start, n), events);
-  })
+  given("a stream of an [index, value] pair", [
+    it("should keep index and discard value", async ({ equal }) => {
+      // Fixture setup
+      const idx = randomInt(0, 10000);
+      const s = withIndexStart(idx, constant(TEST_EVENT_VALUE, periodic(1)));
+      const n = randomInt(10, 20);
+      const expectedEvents = range(idx, n);
+      // Exercise system
+      const result = keepIndex(s);
+      // Verify outcome
+      const actualEvents = await collect(n, result);
+      equal(expectedEvents, actualEvents);
+    })
+  ])
 ]);
