@@ -18,7 +18,7 @@ const randomInt = (min: number, max: number) =>
   min + Math.floor(Math.random() * (max - min))
 
 export const indexTests = describe('index', [
-  it('should replace events with 0-based index', async ({ equal }) => {
+  it('replaces events with 0-based index', async ({ equal }) => {
     const n = randomInt(10, 20)
     const events = await collect(n, index(periodic(1)))
     equal(range(0, n), events)
@@ -26,7 +26,7 @@ export const indexTests = describe('index', [
 ])
 
 export const withIndexTests = describe('withIndex', [
-  it('should pair events with 0-based count', async ({ equal }) => {
+  it('pairs events with 0-based count', async ({ equal }) => {
     const n = randomInt(10, 20)
     const events = await collect(n, withIndex(constant('test', periodic(1))))
     equal(range(0, n).map(x => [x, 'test']), events)
@@ -34,7 +34,7 @@ export const withIndexTests = describe('withIndex', [
 ])
 
 export const countTests = describe('count', [
-  it('should replace events with 1-based count', async ({ equal }) => {
+  it('replaces events with 1-based count', async ({ equal }) => {
     const n = randomInt(10, 20)
     const events = await collect(n, count(periodic(1)))
     equal(range(1, n), events)
@@ -42,7 +42,7 @@ export const countTests = describe('count', [
 ])
 
 export const withCountTests = describe('withCount', [
-  it('should pair events with 1-based count', async ({ equal }) => {
+  it('pairs events with 1-based count', async ({ equal }) => {
     const n = randomInt(10, 20)
     const events = await collect(n, withCount(constant('test', periodic(1))))
     equal(range(1, n).map(x => [x, 'test']), events)
@@ -50,7 +50,7 @@ export const withCountTests = describe('withCount', [
 ])
 
 export const withIndexStartTests = describe('withIndexStart', [
-  it('should pair events with start-based index', async ({ equal }) => {
+  it('pairs events with start-based index', async ({ equal }) => {
     const start = randomInt(0, 10000)
     const n = randomInt(10, 20)
     const events = await collect(n, withIndexStart(start, constant('test', periodic(1))))
@@ -59,7 +59,7 @@ export const withIndexStartTests = describe('withIndexStart', [
 ])
 
 export const indexedTests = describe('indexed', [
-  it('should pair events with computed index', async ({ equal }) => {
+  it('pairs events with computed index', async ({ equal }) => {
     const n = randomInt(10, 20)
 
     const s = Array(n).fill('a').join('')
@@ -73,9 +73,8 @@ export const indexedTests = describe('indexed', [
   })
 ])
 
-
 export const keepIndexTests = describe('keepIndex', [
-  it('should keep index and discard value', async ({ equal }) => {
+  it('keeps index and discards value', async ({ equal }) => {
     const start = randomInt(0, 10000)
     const n = randomInt(10, 20)
     const events = await collect(n, keepIndex(withIndexStart(start, constant('test', periodic(1)))))
