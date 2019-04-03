@@ -9,9 +9,9 @@
     "dist"
   ],
   "scripts": {
-    "prepare": "npm run build",
-    "build": "microbundle -f es,cjs",
-    "test": "tsc --noEmit"
+    "prepublishOnly": "npm run build",
+    "build": "microbundle -i src/index.ts -f es,cjs",
+    "test": "typed-test --typeCheck 'src/**/*.test.ts'"
   },
   "keywords": [
     "most",
@@ -25,7 +25,9 @@
     "@most/core": "^1.3.4"
   },
   "devDependencies": {
+    "@most/scheduler": "^1.2.2",
     "@most/types": "^1.0.1",
+    "@typed/test": "^9.1.0",
     "microbundle": "^0.11.0",
     "typescript": "^3.4.1"
   }
