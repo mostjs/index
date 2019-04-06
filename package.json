@@ -5,20 +5,15 @@
   "main": "dist/index.js",
   "module": "dist/index.m.js",
   "types": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "prepublishOnly": "npm run build",
     "build": "microbundle -i src/index.ts -f es,cjs",
+    "lint": "tslint -p tsconfig.json",
+    "lint:fix": "tslint -p tsconfig.json --fix",
     "test": "typed-test --typeCheck 'src/**/*.test.ts'"
   },
-  "keywords": [
-    "most",
-    "mostjs",
-    "reactive",
-    "streams"
-  ],
+  "keywords": ["most", "mostjs", "reactive", "streams"],
   "author": "brian@briancavalier.com",
   "license": "MIT",
   "dependencies": {
@@ -29,6 +24,10 @@
     "@most/types": "^1.0.1",
     "@typed/test": "^9.1.0",
     "microbundle": "^0.11.0",
+    "prettier": "^1.16.4",
+    "tslint": "^5.15.0",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-plugin-prettier": "^2.0.1",
     "typescript": "^3.4.1"
   }
 }

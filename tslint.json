@@ -1,0 +1,21 @@
+{
+  "extends": ["tslint:recommended", "tslint-config-prettier"],
+  "rulesDirectory": ["tslint-plugin-prettier"],
+  "rules": {
+    "ban-types": false,
+    "interface-name": false,
+    "interface-over-type-literal": false,
+    "newline-before-return": false,
+    "no-any": true,
+    "no-console": true,
+    "no-empty-interface": true,
+    "no-namespace": [true, "allow-declarations"],
+    "ordered-imports": true,
+    "object-literal-sort-keys": false,
+    "prefer-object-spread": true,
+    "prettier": true,
+    "switch-default": true,
+    "use-isnan": true,
+    "variable-name": [true, "ban-keywords"]
+  }
+}
