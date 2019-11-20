@@ -27,7 +27,7 @@
   "devDependencies": {
     "@most/scheduler": "^1.2.2",
     "@most/types": "^1.0.1",
-    "@typed/test": "^9.1.0",
+    "@typed/test": "^9.4.0",
     "microbundle": "^0.11.0",
     "typescript": "^3.4.1"
   }
