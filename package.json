@@ -25,7 +25,7 @@
     "@most/core": "^1.5.0"
   },
   "devDependencies": {
-    "@most/scheduler": "^1.2.2",
+    "@most/scheduler": "^1.2.3",
     "@most/types": "^1.0.1",
     "@typed/test": "^9.4.0",
     "microbundle": "^0.11.0",
