@@ -22,7 +22,7 @@
   "author": "brian@briancavalier.com",
   "license": "MIT",
   "dependencies": {
-    "@most/core": "^1.3.4"
+    "@most/core": "^1.5.0"
   },
   "devDependencies": {
     "@most/scheduler": "^1.2.2",
