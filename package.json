@@ -28,7 +28,7 @@
     "@most/scheduler": "^1.2.3",
     "@most/types": "^1.0.2",
     "@typed/test": "^9.5.0",
-    "microbundle": "^0.11.0",
+    "microbundle": "^0.12.0",
     "typescript": "^3.9.5"
   }
 }
