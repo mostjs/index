@@ -11,7 +11,7 @@
   "scripts": {
     "prepublishOnly": "npm run build",
     "build": "microbundle -i src/index.ts -f es,cjs",
-    "test": "typed-test --typeCheck 'src/**/*.test.ts'"
+    "test": "typed-test --typeCheck 'src/**/*.__test__.ts'"
   },
   "keywords": [
     "most",
